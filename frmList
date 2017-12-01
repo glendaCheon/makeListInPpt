@@ -1,0 +1,55 @@
+Private Sub btnMakeList_Click()
+    
+    Dim title As String
+    Dim pageNum As Integer
+    Dim forListDot As String
+    Dim tbxName As String
+    
+    Dim allPresentationCnt As Integer
+    Dim currSlide As Slide
+    Dim currTitle As String, prevTitle As String
+    Dim currTbx As TextBox
+    
+    tbxName = "텍스트 개체 틀 1"
+    forListDot = vbTab & "...................."
+    
+    allPresentationCnt = ActivePresentation.Slides.Count
+    
+    For i = 1 To allPresentationCnt
+        Set currSlide = ActivePresentation.Slides(i)
+        
+        If isShapeExists(tbxName, currSlide.shapes) Then
+            pageNum = ActivePresentation.Slides(i).SlideNumber
+            currTitle = ActivePresentation.Slides(i).shapes(tbxName).TextFrame.TextRange.Text
+            
+            If currTitle <> prevTitle Then
+                title = title & currTitle & forListDot & pageNum & vbLf
+                prevTitle = currTitle
+            End If
+        End If
+    Next
+        
+    
+    
+    Me.tbxListResult.Text = title
+    
+    
+End Sub
+Function isShapeExists(shpName As String, shapes As shapes)
+    Dim currShape As shape
+    Dim result As Boolean
+    
+    result = False
+
+    For Each currShape In shapes
+        If currShape.Name = shpName Then
+            result = True
+            Exit For
+        End If
+    Next
+    
+    isShapeExists = result
+        
+End Function
+    
+
